@@ -57,14 +57,9 @@ Database 메뉴를 클릭 하면 생성된 데이터 베이스 클러스터를 �
 
 
 #### 기타 필요한 소프트웨어
-클라이언트 애플리케이션 테스트를 위한 Nodejs 필요합니다.
+Query를 실행하기 위한 쉘(mongosh)을 이용하여 실습을 진행 함으로 이를 다운로드 설치 합니다.   
 MongoDB에 접속하고 데이터를 조회 하는 GUI Tool (Compass)를 다운로드 합니다.
 
-Nodejs : 
-https://nodejs.org/en/download/
-
-Python :
-https://www.python.org/downloads/
 
 Compass :   
 https://www.mongodb.com/products/compass
