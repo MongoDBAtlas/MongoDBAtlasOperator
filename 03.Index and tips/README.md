@@ -38,7 +38,7 @@ E-S-R 규칙에 맞추어 인덱스를 생성 하고 Explain에서 개선된 사
 
 테스트를 위해 cast - year - title 순서로 인덱스를 생성 하고 테스트 합니다.   
 
-<img src="03.Index and tips/images/image02.png" width="50%" height="50%">     
+<img src="/03.Index and tips/images/image02.png" width="50%" height="50%">     
 
 
 동일한 쿼리를 수행 하여 봅니다.    
@@ -52,7 +52,7 @@ E-S-R 규칙에 맞추어 인덱스를 생성 하고 Explain에서 개선된 사
 인덱스를 ESR 순서로 작성합니다. (cast-title-year)   
 동일한 쿼리를 실행 하여 플랜을 확인 합니다.    
 
-<img src="03.Index and tips/images/image04.png" width="90%" height="90%">     
+<img src="/03.Index and tips/images/image04.png" width="90%" height="90%">     
 
 Projection 항목에 title만을 출력 하도록 하고 Plan을 확인 합니다.
 
