@@ -3,7 +3,7 @@
 
 # MongoDB Atlas Hands-on Training
 
-## Index and Aggreagation
+## Index and Tips
 생성한 컬렉션에 인덱스를 생성하여 빠른 데이터 엑세스가 되는 것을 확인 합니다.
 
 ### [&rarr; Index on Movies](#Index)
