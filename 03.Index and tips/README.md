@@ -1,15 +1,12 @@
 <img src="https://companieslogo.com/img/orig/MDB_BIG-ad812c6c.png?t=1648915248" width="50%" title="Github_Logo"/> <br>
 
 
-# MongoDB Atlas Training for Operators
+# MongoDB Atlas Hands-on Training
 
-### [&rarr; CRUD with Nodejs](#CRUD)
+## Index and Aggreagation
+생성한 컬렉션에 인덱스를 생성하여 빠른 데이터 엑세스가 되는 것을 확인 합니다.
 
-### [&rarr; CRUD with Mongosh](#MONGOSH)
-
-### [&rarr; Compass 를 이용한 데이터 확인](#Compass)
-
-### [&rarr; 추가 Query](#option)
+### [&rarr; Index on Movies](#Index)
 
 ### [&rarr; Aggregation](#Aggregation)
 
@@ -20,555 +17,51 @@
 <br>
 
 
+### Index
 
-### CRUD
+sample_mflix.movies 에서 2000년 이후에 개봉된 영화 중 "Bill Murray"가 출연한 영화 리스트를 검색 하고 제목 순서로 출력 합니다.   
 
-Nodejs로 Atlas 에 접속 하고 MongoDB Query 를 이용하여 데이터를 생성, 조회, 삭제를 테스트 합니다. <br>
-코드는 application 폴더에 있으며 실행을 위해서는 NodeJS를 설치하고 테스트를 위해 관련 패키지를 설치 하여 줍니다.<br><br>
-***(아래 명령어는 반드시 application 폴더에서 실행하셔야 합니다)***
+Compass에서 movies 컬렉션을 선택 하고 Explain Plan 에서 실행 합니다.   
 ````
-% npm install
-
-added 196 packages, and audited 197 packages in 2s
-
-14 packages are looking for funding
-  run `npm fund` for details
-
-found 0 vulnerabilities
-````
-node_modules 폴더가 생성되어 관련된 라이브러리가 설치 됩니다.
-
-
-#### Connection Test
-
-MongoDB Atlas 와 연결을 위한 테스트 입니다.
-MongoDB atlas Console에 접근 주소를 얻어야 합니다. 
-접속 주소를 얻기 위해 Console에 로그인합니다. 
-데이터베이스 클러스터의 Connect 버튼을 클릭 합니다.
-
-<img src="/01.CRUD and MQL/images/image01.png" width="90%" height="90%">     
-
-
-접근방법을 선택 하여 주는 단계에서 Connect your application를 선택 하면 접근 주소를 얻을 수 있습니다.   
-
-<img src="/01.CRUD and MQL/images/image08.png" width="60%" height="60%">   
-
-Driver는 Node.js를 선택 하고 버젼은 4.1 or later를 선택 하여 주면 연결을 위한 Connection String이 생성 됩니다.    
-
-<img src="/01.CRUD and MQL/images/image09.png" width="70%" height="70%">     
-
-
-connect.js 에 const uri을 수정 하여 줍니다. 생성한 Database Account 와 비밀 번호를 수정하여 줍니다. 만약 비밀번호에 특수문자가 포함되어있는 경우 ('@','#', '!' 등) HTML URI encoding이 필요합니다.  
-(https://www.w3schools.com/tags/ref_urlencode.ASP)
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-연결 테스트를 위해 다음을 실행 합니다.
-
-````
-% node connect.js 
-Connected successfully to server
-````
-
-#### Insert Test
-
-MongoDB Atlas 와 연결하여 데이터를 생성 합니다.
-insertOne.js 에 const uri을 수정 하여 줍니다.
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-입력할 데이터를 수정 하여 줍니다. 
-
-````
-      const newUser = <<query>>;  // query를 수정
-
-      const newUser = {
-        ssn:"123-456-0001", 
-        email:"user@email.com", 
-        name:"Gildong Hong", 
-        DateOfBirth: "1st Jan.", 
-        Hobbies:["Martial arts"],
-        Addresses:[{"Address Name":"Work","Street":"431, Teheran-ro GangNam-gu ","City":"Seoul", "Zip":"06159"}], 
-        Phones:[{"type":"mobile","number":"010-5555-1234"}]
-      };
-````
-
-입력 테스트를 위해 다음을 실행 합니다.
-
-````
-% node insertOne.js 
-A document was inserted with the _id: 63bba1f8e554c42df82f974e
-````
-Atlas Console 에서 데이터 생성 여부를 확인 합니다.
-
-
-#### find Test
-
-MongoDB Atlas 와 연결하여 데이터를 조회 합니다.
-findeOne.js 에 const uri을 수정 하여 줍니다.
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-입력할 데이터를 수정 하여 줍니다.
-조회할 데이터의 ssn을 확인 합니다.  
-
-`````
-const query = {ssn:"123-456-0001"};
-`````
-
-데이터를 조회 합니다
-````
-% node findOne.js
-Find One Record: 63bba1f8e554c42df82f974e
-Find One Record by SSN: 63bba1f8e554c42df82f974e
-````
-
-#### Update Test
-
-MongoDB Atlas 와 연결하여 데이터를 업데이트 합니다.
-updateOne.js 에 const uri을 수정 하여 줍니다.
-
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-수정할 데이터를 ssn을 입력 하여 줍니다.
-수정 대상 데이터의 ssn 및 수정할 데이터 항목을 확인 수정 하여 줍니다.
-`````
-      const query = {"ssn":"123-456-0001"};
-      const updatedata ={$set:{email:"gildong@email.com"}};
-`````
-
-데이터를 수정 합니다
-````
-% node updateOne.js
-1 document(s) matched the filter, updated 0 document(s)
-````
-
-#### Update Hobbies Test
-
-
-MongoDB Atlas 와 연결하여 데이터를 업데이트 합니다.
-updateHobbies.js 에 const uri을 수정 하여 줍니다.
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-수정할 데이터를 ssn을 입력 하여 줍니다.
-수정 대상 데이터의 ssn 및 Hobby 항목을 추가 하여 줍니다. (취미로 Reading 추가 하기)
-`````
-      const query = {"ssn":"123-456-0001"};
-      const updatedata ={$push:{Hobbies:"Reading"}};     
-`````
-
-데이터를 수정 합니다
-````
-node updateHobbies.js 
-1 document(s) matched the filter, updated 1 document(s)
-````
-Atlas Data Console에서 데이터가 수정 된 것을 확인 합니다.
-
-
-#### Remove Test
-
-
-MongoDB Atlas 와 연결하여 데이터를 삭제 합니다.
-removeUser.js 에 const uri을 수정 하여 줍니다.
-
-````
-const uri =mongodb+srv://atlas-account:<password>@cluster0.****.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-````
-삭제할 데이터를 수정 하여 줍니다.
-삭제할 데이터의 ssn 및 입력 하여줍니다.
-`````
-const qeury = {"ssn":"123-456-0001"};
-`````
-
-데이터를 삭제 합니다
-````
-% node removeUser.js 
-1 document(s) removed
-````
-
-
-### MONGOSH
-
-Mongosh로 Atlas 에 접속 하고 MongoDB Query 를 이용하여 데이터를 생성, 조회, 삭제를 테스트 합니다. NodeJS에 익숙하지 않은 경우 이를 이용하여 테스트 합니다.
-
-
-#### Connection
-
-MongoDB Atlas 와 Mongosh을 이용하여 연결 합니다.    
-MongoDB atlas Mongosh 접근 주소를 얻어야 합니다. 
-접속 주소를 얻기 위해 Console에 로그인합니다. 
-데이터베이스 클러스터의 Connect 버튼을 클릭 합니다.
-
-<img src="/01.CRUD and MQL/images/image01.png" width="90%" height="90%">     
-
-
-접근방법을 선택 하여 주는 단계에서 Shell을 선택 하면 접근 주소를 얻을 수 있습니다.   
-
-<img src="/01.CRUD and MQL/images/image20.png" width="60%" height="60%">   
-
-Mongosh이 설치 되어 있음으로 I have the MongoDB Shell installed를 선택하고 계정 접근은 암호로 접근할 것임으로 Password를 선택하면 접근 할 수 있는 주소를 얻을 수 있습니다.    
-
-<img src="/01.CRUD and MQL/images/image21.png" width="70%" height="70%">     
-
-
-Terminal을 열고 해당 주소를 이용하여 mongosh를 실행 하여 줍니다. (접근하기 위한 Account로 입력 하여 줍니다.)
-
-````
- % mongosh "mongodb+srv://cluster0.5qjlg.mongodb.net/myFirstDatabase" --apiVersion 1 --username admin    
-Enter password: **********
-Current Mongosh Log ID:	64454459813babb209a83f4c
-Connecting to:		mongodb+srv://cluster0.5qjlg.mongodb.net/myFirstDatabase
-Using MongoDB:		6.0.5 (API Version 1)
-Using Mongosh:		1.0.5
-
-For mongosh info see: https://docs.mongodb.com/mongodb-shell/
-
-Atlas atlas-t0pzlo-shard-0 [primary] myFirstDatabase> 
-````
-
-#### Insert Test
-
-Mongosh을 이용하여 Atlas와 연결하여 데이터를 생성 합니다.
-
-먼저 데이터베이스를 선택하여야 합니다.
-````
-Atlas atlas-gamf6g-shard-0 [primary] MMT> use handson
-switched to db handson
-Atlas atlas-gamf6g-shard-0 [primary] handson>
-````
-
-다음 데이터 베이스 명령으로 데이터를 생성 합니다.
-
+db.movies.find(
+	{
+    	"cast":"Bill Murray",
+    	"year":{$gte:2000}
+	}
+).sort(
+	{"title":1}
+)
 ````
-db.user.insert(
-  {
-        ssn:"123-456-0001", 
-        email:"user@email.com", 
-        name:"Gildong Hong", 
-        DateOfBirth: "1st Jan.", 
-        Hobbies:["Martial arts"],
-        Addresses:[{"Address Name":"Work","Street":"431, Teheran-ro GangNam-gu ","City":"Seoul", "Zip":"06159"}], 
-        Phones:[{"type":"mobile","number":"010-5555-1234"}]
-  }
-);
+<img src="/03.index and aggregation/images/image01.png" width="100%" height="100%">     
 
-{
-  acknowledged: true,
-  insertedIds: { '0': ObjectId("653662c14771f95974766b8d") }
-}
-````
-Atlas Console 에서 데이터 생성 여부를 확인 합니다.
-
-
-#### find Test
-
-Mongosh을 이용하여 Atlas와 연결하여 데이터를 조회 합니다.
-
-먼저 데이터베이스를 선택하여야 합니다. (이미 해당 데이터베이스를 사용 하고 있으면 생략 합니다)
-````
-Atlas atlas-gamf6g-shard-0 [primary] MMT> use handson
-switched to db handson
-Atlas atlas-gamf6g-shard-0 [primary] handson>
-````
-
-데이터를 조회 합니다
-````
-db.user.find({ssn:"123-456-0001"});
-
-[
-  {
-    _id: ObjectId("64454591813babb209a83f4d"),
-    ssn: '123-456-0001',
-    email: 'user@email.com',
-    name: 'Gildong Hong',
-    DateOfBirth: '1st Jan.',
-    Hobbies: [ 'Martial arts' ],
-    Addresses: [
-      {
-        'Address Name': 'Work',
-        Street: '431, Teheran-ro GangNam-gu ',
-        City: 'Seoul',
-        Zip: '06159'
-      }
-    ],
-    Phones: [ { type: 'mobile', number: '010-5555-1234' } ]
-  }
-]
-````
-
-#### Update Test
-
-Mongosh을 이용하여 Atlas와 연결하여 데이터를 업데이트 합니다.
-
-먼저 데이터베이스를 선택하여야 합니다. (이미 해당 데이터베이스를 사용 하고 있으면 생략 합니다)
-````
-Atlas atlas-gamf6g-shard-0 [primary] MMT> use handson
-switched to db handson
-Atlas atlas-gamf6g-shard-0 [primary] handson>
-````
-
-수정할 데이터를 ssn을 입력 하여 줍니다.
-수정 대상 데이터의 ssn 및 수정할 데이터 항목을 확인 수정 하여 줍니다.
-`````
-db.user.updateOne(
-  {"ssn":"123-456-0001"},
-   [
-      { $set: { email: "gildong@email.com" } }
-   ]
-);
-
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 1,
-  modifiedCount: 1,
-  upsertedCount: 0
-}      
-`````
-
-데이터를 수정 결과를 확인 합니다. (이메일 주소가 수정 된 것을 확인 합니다)
-````
-db.user.find({"ssn":"123-456-0001"});
-
-[
-  {
-    _id: ObjectId("64454591813babb209a83f4d"),
-    ssn: '123-456-0001',
-    email: 'gildong@email.com',
-    name: 'Gildong Hong',
-    DateOfBirth: '1st Jan.',
-    Hobbies: [ 'Martial arts' ],
-    Addresses: [
-      {
-        'Address Name': 'Work',
-        Street: '431, Teheran-ro GangNam-gu ',
-        City: 'Seoul',
-        Zip: '06159'
-      }
-    ],
-    Phones: [ { type: 'mobile', number: '010-5555-1234' } ]
-  }
-]
-````
-
-#### Update Hobbies Test
-
-Mongosh을 이용하여 Atlas와 연결하여 데이터를 업데이트 (Hobbies를 추가)합니다.
-
-먼저 데이터베이스를 선택하여야 합니다. (이미 해당 데이터베이스를 사용 하고 있으면 생략 합니다)
-````
-Atlas atlas-gamf6g-shard-0 [primary] MMT> use handson
-switched to db handson
-Atlas atlas-gamf6g-shard-0 [primary] handson>
-````
-
-수정할 데이터를 ssn을 입력 하여 줍니다.
-수정 대상 데이터의 ssn 및 Hobby 항목을 추가 하여 줍니다. (취미로 Reading 추가 하기)
-`````
-db.user.updateOne(
-  {"ssn":"123-456-0001"},
-  { $push: { Hobbies:"Reading" } }
-);
-
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 1,
-  modifiedCount: 1,
-  upsertedCount: 0
-}
-`````
-
-데이터를 수정 결과를 확인 합니다. (Hobby에 Reading이 추가되어 있음)
-````
-db.user.find({"ssn":"123-456-0001"});
-
-[
-  {
-    _id: ObjectId("64454591813babb209a83f4d"),
-    ssn: '123-456-0001',
-    email: 'gildong@email.com',
-    name: 'Gildong Hong',
-    DateOfBirth: '1st Jan.',
-    Hobbies: [ 'Martial arts', 'Reading' ],
-    Addresses: [
-      {
-        'Address Name': 'Work',
-        Street: '431, Teheran-ro GangNam-gu ',
-        City: 'Seoul',
-        Zip: '06159'
-      }
-    ],
-    Phones: [ { type: 'mobile', number: '010-5555-1234' } ]
-  }
-]
-
-````
-
-#### Remove Test
-
-Mongosh을 이용하여 Atlas와 연결하여 데이터를 삭제 합니다.
-
-먼저 데이터베이스를 선택하여야 합니다. (이미 해당 데이터베이스를 사용 하고 있으면 생략 합니다)
-````
-Atlas atlas-gamf6g-shard-0 [primary] MMT> use handson
-switched to db handson
-Atlas atlas-gamf6g-shard-0 [primary] handson>
-````
-
-삭제할 데이터를 수정 하여 줍니다.
-삭제할 데이터의 ssn 및 입력 하여줍니다.
-`````
-db.user.deleteOne({ssn:"123-456-0001"});
-
-{ acknowledged: true, deletedCount: 1 }
-
-`````
-
-데이터를 확인 합니다.
-````
-db.user.findOne({ssn:"123-456-0001"});
-null
-````
-
-
-
-### Compass
-
-MongoDB Cluster에 접속하여 저장된 데이터 등을 볼 수 있는 개발자용 GUI툴입니다. 이를 이용하여 데이터를 조회 하고 변경 하여 줍니다. 다음 링크에서 다운로드가 가능 합니다.    
-Compass :   
-https://www.mongodb.com/products/compass
+No index available for this query 로 인덱스가 사용 되지 않은 것을 확인 할 수 있으며 Dcouments Examined의 갯수가 23530으로 전체 문서가 스캔 된 것을 확인 할 수 있습니다.    
+또한 Documnets Returned 가 12인 것으로 전체 문서 중 12개 문서가 리턴된 것으로 12개 문서를 찾기 위해 23530 문서를 검색한 것으로 비효율적인 것을 알 수 있습니다.
 
-테스트를 위해 다음 방법으로 데이터를 생성 하여 줍니다.
-````
-% node insertMany.js 
-A document was inserted with the _id: 63e32381541c67cc69d78977
-A document was inserted with the _id: 63e32381541c67cc69d78978
-A document was inserted with the _id: 63e32381541c67cc69d78979
-A document was inserted with the _id: 63e32381541c67cc69d7897a
-...
-````
-
-데이터가 100건이 생성이 되게 됩니다.
-
-
-#### Connection
-MongoDB atlas Console에 접근 주소를 얻어야 합니다. 
-접속 주소를 얻기 위해 Console에 로그인합니다.    
-데이터베이스 클러스터의 Connect 버튼을 클릭 합니다.
-
-<img src="/01.CRUD and MQL/images/image01.png" width="90%" height="90%">     
-
-접근방법을 선택 하여 주는 단계에서 Connect using MongoDB Compass를 선택 하면 접근 주소를 얻을 수 있습니다.    
-
-<img src="/01.CRUD and MQL/images/image02.png" width="60%" height="60%">     
-
-Connection String을 복사하여 줍니다. 이후 Compass를 실행 하여 줍니다.     
-<img src="/01.CRUD and MQL/images/image03.png" width="70%" height="70%">     
-
-
-
-복사한 Connection String을 입력하여 줍니다.   
-
-<img src="/01.CRUD and MQL/images/image04.png" width="90%" height="90%">     
-
-
-#### 데이터 조회
-데이터베이스에서 생성한 handson 탭을 클릭 하면 컬렉션 리스트를 볼 수 있습니다. 생성한 user컬렉션을 선택 합니다.    
-
-<img src="/01.CRUD and MQL/images/image05.png" width="90%" height="90%">     
-
-데이터 검색을 위해서 Filter 부분에 검색 조건을 입력 하여 줍니다.
-ssn 이 123-456-0001 인 데이터를 찾기 위해 다음과 같이 입력 하여 줍니다.
-
-````
-{ssn: "123-456-0001"}
-````
-
-<img src="/01.CRUD and MQL/images/image06.png" width="90%" height="90%">     
-
-나이(age)가 10 이상 40이하인 사람을 찾기를 합니다. 조건은 age >= 10 이고 age <=40으로 합니다.
-
-````
-{age: {$gte: 10, $lte: 40}}
-````
+E-S-R 규칙에 맞추어 인덱스를 생성 하고 Explain에서 개선된 사항을 확인 합니다.
 
-<img src="/01.CRUD and MQL/images/image07.png" width="90%" height="90%">     
 
+#### Index 생성
 
+테스트를 위해 cast - year - title 순서로 인덱스를 생성 하고 테스트 합니다.   
 
-### option
-생성된 데이터 베이스중 Movie 관련 데이터 컬렉션 (sample_mflix.movies)에서 다음 내용을 Query 합니다.
+<img src="/03.index and aggregation/images/image02.png" width="50%" height="50%">     
 
-- 1987 년에 나온 데이터 조회 (Where year = 1987)
 
-- 장르가 Comedy 에 속하는 영화 검색
+동일한 쿼리를 수행 하여 봅니다.    
 
-- 장르가 Comedy 하나 만 있는 데이터 검색
+<img src="/03.index and aggregation/images/image03.png" width="90%" height="90%">     
 
-- 장르가 Comedy 혹은 Drama 인 데이터 검색
+문서 스캔이 Index 스캔으로 변경 되고 기존에 비해 성능이 개선된 것을 확인 합니다.  
 
-- imdb 의 평가 점수가 8.0 이상이고 등급이 PG 인 영화 검색
+첫 번째에서 IXSCAN으로 생성한 인덱스를 이용하여 12개의 문서가 검색된 것을 확인 할 수 있습니다. 이후 정렬 과정을 거친 후 데이터가 반환 되는 것을 확인 할 수 있습니다. 
 
-- metacritic의 평점이 존재 하는 영화 검색
+인덱스를 ESR 순서로 작성합니다. (cast-title-year)   
+동일한 쿼리를 실행 하여 플랜을 확인 합니다.    
 
-- Dr. Strangelove 로 시작하는 영화 검색
+<img src="/03.index and aggregation/images/image04.png" width="90%" height="90%">     
 
-해당 쿼리는 다음과 같습니다.
-- 1987 년에 나온 데이터 조회 (Where year = 1987)
-````
-db.movies.find({year:1987})
-````
-<img src="/01.CRUD and MQL/images/image11.png" width="90%" height="90%">     
-
-- 장르가 Comedy 에 속하는 영화 검색
-````
-db.movies.find({genres: "Comedy"})
-
-````
-<img src="/01.CRUD and MQL/images/image12.png" width="90%" height="90%">     
-
-- 장르가 Comedy 하나 만 있는 데이터 검색
-````
-db.movies.find({genres:["Comedy"]})
-
-````
-<img src="/01.CRUD and MQL/images/image13.png" width="90%" height="90%">     
-
-- 장르가 Comedy 혹은 Drama 인 데이터 검색
-````
-db.movies.find({genres:{$in:["Comedy", "Drama"]}})
+Projection 항목에 title만을 출력 하도록 하고 Plan을 확인 합니다.
 
-````
-<img src="/01.CRUD and MQL/images/image14.png" width="90%" height="90%">     
-
-- imdb 의 평가 점수가 8.0 이상이고 등급이 PG 인 영화 검색
-````
-db.movies.find({"imdb.rating" : {$gt: 8.0}, rated:"PG"})
-
-````
-<img src="/01.CRUD and MQL/images/image15.png" width="90%" height="90%">     
-
-- metacritic의 평점이 존재 하는 영화 검색
-````
-db.movies.find({metacritic: {$exists: true}})
-
-````
-<img src="/01.CRUD and MQL/images/image16.png" width="90%" height="90%">     
-
-- Dr. Strangelove 로 시작하는 영화 검색
-````
-db.movies.find({title: {$regex: '^Dr. Strangelove'}})
-
-````
-<img src="/01.CRUD and MQL/images/image17.png" width="90%" height="90%">     
 
 ### Aggregation
 
@@ -625,23 +118,23 @@ Compass 의 Aggregation에서 Stage를 생성 하여 줍니다.
 
 match stage 생성 하기   
 
-<img src="/01.CRUD and MQL/images/image25.png" width="90%" height="90%">     
+<img src="/03.index and aggregation/images/image05.png" width="90%" height="90%">     
 
 unwind stage 생성 하기    
 
-<img src="/01.CRUD and MQL/images/image26.png" width="90%" height="90%">    
+<img src="/03.index and aggregation/images/image06.png" width="90%" height="90%">    
 
 group stage 생성 하기    
 
-<img src="/01.CRUD and MQL/images/image27.png" width="90%" height="90%">     
+<img src="/03.index and aggregation/images/image07.png" width="90%" height="90%">     
 
 out stage 생성 하기    
 
-<img src="/01.CRUD and MQL/images/image28.png" width="90%" height="90%">     
+<img src="/03.index and aggregation/images/image08.png" width="90%" height="90%">     
 
 생성된 컬렉션을 확인 합니다. out은 컬렉션을 생성하고 데이터를 생성 하여 줌으로 다시 aggregation을 실행 하기 위해서는 생성된 컬렉션을 삭제하고 실행 해줍니다. (실행 후 작성한 aggregation을 저장하여 줍니다.)
 
-<img src="/01.CRUD and MQL/images/image29.png" width="100%" height="100%">     
+<img src="/03.index and aggregation/images/image09.png" width="100%" height="100%">     
 
 
 #### Aggregation Node JS 실행 하기
@@ -650,11 +143,11 @@ out stage 생성 하기
 개발용 코드는 자동으로 생성 하여 줌으로 이를 이용 하도록 합니다. Compass에서 개발한 aggregation코드를 오픈하여 줍니다.  
 메뉴중 "EXPORT TO LANGUAGE"를 클릭 합니다.
 
-<img src="/01.CRUD and MQL/images/image30.png" width="90%" height="90%">     
+<img src="/03.index and aggregation/images/image10.png" width="90%" height="90%">     
 
 개발 언어를 Node를 선택 하여 주고 코드를 복사하여 줍니다.   
 
-<img src="/01.CRUD and MQL/images/image31.png" width="80%" height="80%">     
+<img src="/03.index and aggregation/images/image11.png" width="80%" height="80%">     
 
 application 의 aggregation.js 에 복사한 내용을 붙여 주기 합니다.
 컬렉션을 만들지 않고 화면을 출력 하기 위해 out stage 는 생략 하고 작성 합니다.
@@ -678,122 +171,140 @@ application 의 aggregation.js 에 복사한 내용을 붙여 주기 합니다.
                   '$sum': 1
                 }
               }
-            }, {
-              '$sort': {
-                'count': -1
-              }
             }
           ];
+````
+
+코드를 다음과 같이 실행 하여 줍니다. 실행 전 필요한 모듈을 설치 하여 주고 실행 하여 줍니다.
 
 ````
-````
-kyle@M-FC637HK1H7 application % node aggregation.js
-{ _id: 'USA', count: 3843 }
-{ _id: 'France', count: 793 }
-{ _id: 'UK', count: 696 }
-{ _id: 'Italy', count: 477 }
-{ _id: 'Germany', count: 442 }
-{ _id: 'Canada', count: 348 }
-{ _id: 'India', count: 199 }
-{ _id: 'Spain', count: 197 }
-{ _id: 'Japan', count: 171 }
-{ _id: 'Australia', count: 148 }
-{ _id: 'Hong Kong', count: 117 }
-{ _id: 'Belgium', count: 112 }
-{ _id: 'Finland', count: 104 }
-{ _id: 'Sweden', count: 94 }
-{ _id: 'Denmark', count: 84 }
-{ _id: 'Netherlands', count: 76 }
-{ _id: 'Ireland', count: 73 }
-{ _id: 'Russia', count: 66 }
-{ _id: 'Mexico', count: 62 }
-{ _id: 'Norway', count: 56 }
-{ _id: 'Argentina', count: 54 }
-{ _id: 'China', count: 50 }
-{ _id: 'Switzerland', count: 49 }
-{ _id: 'South Korea', count: 49 }
-{ _id: 'Brazil', count: 48 }
-{ _id: 'West Germany', count: 47 }
-{ _id: 'Poland', count: 47 }
-{ _id: 'Czech Republic', count: 41 }
-{ _id: 'Soviet Union', count: 39 }
-{ _id: 'Austria', count: 33 }
-{ _id: 'Hungary', count: 31 }
-{ _id: 'New Zealand', count: 29 }
-{ _id: 'Taiwan', count: 28 }
-{ _id: 'Israel', count: 26 }
-{ _id: 'Romania', count: 25 }
-{ _id: 'Greece', count: 24 }
-{ _id: 'Turkey', count: 23 }
-{ _id: 'Czechoslovakia', count: 21 }
-{ _id: 'Luxembourg', count: 20 }
-{ _id: 'Thailand', count: 20 }
-{ _id: 'Iceland', count: 19 }
+application % npm install
+
+added 196 packages, and audited 197 packages in 2s
+
+14 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+kyudong.kim@Kyudongui-MacBookPro application % node aggregation.js 
+Aggregation Records : [object Object]
+kyudong.kim@Kyudongui-MacBookPro application % node aggregation.js
+ReferenceError: cursor is not defined
+    at run (/Users/kyudong.kim/works/group_git/MongoDBAtlasTraining/03.index and aggregation/application/aggregation.js:34:7)
+kyudong.kim@Kyudongui-MacBookPro application % node aggregation.js
+Error: querySrv ENOTFOUND _mongodb._tcp.***.***.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:251:17) {
+  errno: undefined,
+  code: 'ENOTFOUND',
+  syscall: 'querySrv',
+  hostname: '_mongodb._tcp.***.***.mongodb.net'
+}
+application % node aggregation.js
 { _id: 'Portugal', count: 14 }
-{ _id: 'Iran', count: 13 }
-{ _id: 'South Africa', count: 12 }
-{ _id: 'Philippines', count: 10 }
-{ _id: 'Croatia', count: 10 }
-{ _id: 'Serbia', count: 10 }
-{ _id: 'Latvia', count: 8 }
-{ _id: 'Estonia', count: 8 }
-{ _id: 'Federal Republic of Yugoslavia', count: 8 }
-{ _id: 'Yugoslavia', count: 8 }
-{ _id: 'Cuba', count: 7 }
-{ _id: 'Chile', count: 7 }
-{ _id: 'Singapore', count: 6 }
-{ _id: 'United Arab Emirates', count: 6 }
-{ _id: 'Slovakia', count: 6 }
-{ _id: 'Ukraine', count: 6 }
-{ _id: 'Uruguay', count: 6 }
-{ _id: 'Slovenia', count: 6 }
-{ _id: 'Lebanon', count: 5 }
-{ _id: 'Serbia and Montenegro', count: 5 }
-{ _id: 'Bulgaria', count: 4 }
-{ _id: 'Jordan', count: 4 }
-{ _id: 'Malaysia', count: 4 }
-{ _id: 'Egypt', count: 4 }
-{ _id: 'Republic of Macedonia', count: 4 }
-{ _id: 'Senegal', count: 3 }
-{ _id: 'Puerto Rico', count: 3 }
-{ _id: 'Tunisia', count: 3 }
-{ _id: 'Georgia', count: 3 }
-{ _id: 'Colombia', count: 2 }
-{ _id: 'Lithuania', count: 2 }
-{ _id: 'Botswana', count: 2 }
-{ _id: 'Uzbekistan', count: 2 }
-{ _id: 'Indonesia', count: 2 }
-{ _id: 'Bosnia and Herzegovina', count: 2 }
-{ _id: 'Armenia', count: 2 }
-{ _id: 'Iraq', count: 1 }
-{ _id: 'Angola', count: 1 }
-{ _id: 'Kyrgyzstan', count: 1 }
-{ _id: 'Saudi Arabia', count: 1 }
-{ _id: 'Nigeria', count: 1 }
-{ _id: 'Panama', count: 1 }
-{ _id: 'Tajikistan', count: 1 }
-{ _id: 'Zaire', count: 1 }
-{ _id: 'Liechtenstein', count: 1 }
-{ _id: 'Bhutan', count: 1 }
-{ _id: 'Papua New Guinea', count: 1 }
-{ _id: 'Qatar', count: 1 }
-{ _id: 'Algeria', count: 1 }
-{ _id: "Cète d'Ivoire", count: 1 }
-{ _id: 'Faroe Islands', count: 1 }
-{ _id: 'Malta', count: 1 }
 { _id: 'Cameroon', count: 1 }
-{ _id: 'Peru', count: 1 }
-{ _id: 'Kazakhstan', count: 1 }
-{ _id: 'Rwanda', count: 1 }
+{ _id: 'Iraq', count: 1 }
+{ _id: 'Italy', count: 477 }
+{ _id: 'Romania', count: 25 }
+{ _id: 'Germany', count: 442 }
+{ _id: 'Iceland', count: 19 }
+{ _id: 'Poland', count: 47 }
+{ _id: 'Canada', count: 348 }
+{ _id: 'Soviet Union', count: 39 }
+{ _id: 'Brazil', count: 48 }
+{ _id: 'UK', count: 696 }
 { _id: 'East Germany', count: 1 }
+{ _id: 'Israel', count: 26 }
+{ _id: 'Zaire', count: 1 }
+{ _id: 'Cuba', count: 7 }
+{ _id: 'Yugoslavia', count: 8 }
+{ _id: 'Serbia and Montenegro', count: 5 }
 { _id: 'Albania', count: 1 }
-{ _id: 'Monaco', count: 1 }
-{ _id: 'Greenland', count: 1 }
+{ _id: 'Japan', count: 171 }
+{ _id: 'Spain', count: 197 }
+{ _id: 'Czech Republic', count: 41 }
+{ _id: 'Ireland', count: 73 }
+{ _id: 'Sweden', count: 94 }
+{ _id: 'Malta', count: 1 }
+{ _id: 'Greece', count: 24 }
+{ _id: 'United Arab Emirates', count: 6 }
+{ _id: 'Serbia', count: 10 }
+{ _id: 'Puerto Rico', count: 3 }
 { _id: 'Montenegro', count: 1 }
-{ _id: 'Bolivia', count: 1 }
-{ _id: 'North Korea', count: 1 }
 { _id: 'Palestine', count: 1 }
-
+{ _id: 'Liechtenstein', count: 1 }
+{ _id: 'West Germany', count: 47 }
+{ _id: 'Botswana', count: 2 }
+{ _id: 'Colombia', count: 2 }
+{ _id: 'Mexico', count: 62 }
+{ _id: 'Tajikistan', count: 1 }
+{ _id: "Cète d'Ivoire", count: 1 }
+{ _id: 'Kazakhstan', count: 1 }
+{ _id: 'Monaco', count: 1 }
+{ _id: 'Denmark', count: 84 }
+{ _id: 'Russia', count: 66 }
+{ _id: 'Turkey', count: 23 }
+{ _id: 'Latvia', count: 8 }
+{ _id: 'Uzbekistan', count: 2 }
+{ _id: 'Bolivia', count: 1 }
+{ _id: 'Panama', count: 1 }
+{ _id: 'Papua New Guinea', count: 1 }
+{ _id: 'Iran', count: 13 }
+{ _id: 'New Zealand', count: 29 }
+{ _id: 'Greenland', count: 1 }
+{ _id: 'Netherlands', count: 76 }
+{ _id: 'Bulgaria', count: 4 }
+{ _id: 'Croatia', count: 10 }
+{ _id: 'Faroe Islands', count: 1 }
+{ _id: 'Singapore', count: 6 }
+{ _id: 'Norway', count: 56 }
+{ _id: 'China', count: 50 }
+{ _id: 'Slovakia', count: 6 }
+{ _id: 'Armenia', count: 2 }
+{ _id: 'Luxembourg', count: 20 }
+{ _id: 'Austria', count: 33 }
+{ _id: 'Chile', count: 7 }
+{ _id: 'Indonesia', count: 2 }
+{ _id: 'Rwanda', count: 1 }
+{ _id: 'Angola', count: 1 }
+{ _id: 'Slovenia', count: 6 }
+{ _id: 'Jordan', count: 4 }
+{ _id: 'Taiwan', count: 28 }
+{ _id: 'Tunisia', count: 3 }
+{ _id: 'Lebanon', count: 5 }
+{ _id: 'Republic of Macedonia', count: 4 }
+{ _id: 'Hungary', count: 31 }
+{ _id: 'South Korea', count: 49 }
+{ _id: 'Belgium', count: 112 }
+{ _id: 'Uruguay', count: 6 }
+{ _id: 'Finland', count: 104 }
+{ _id: 'Bosnia and Herzegovina', count: 2 }
+{ _id: 'Saudi Arabia', count: 1 }
+{ _id: 'North Korea', count: 1 }
+{ _id: 'Ukraine', count: 6 }
+{ _id: 'Algeria', count: 1 }
+{ _id: 'South Africa', count: 12 }
+{ _id: 'India', count: 199 }
+{ _id: 'Argentina', count: 54 }
+{ _id: 'Egypt', count: 4 }
+{ _id: 'Czechoslovakia', count: 21 }
+{ _id: 'Philippines', count: 10 }
+{ _id: 'Bhutan', count: 1 }
+{ _id: 'Thailand', count: 20 }
+{ _id: 'Federal Republic of Yugoslavia', count: 8 }
+{ _id: 'Estonia', count: 8 }
+{ _id: 'Peru', count: 1 }
+{ _id: 'Senegal', count: 3 }
+{ _id: 'Georgia', count: 3 }
+{ _id: 'Australia', count: 148 }
+{ _id: 'Malaysia', count: 4 }
+{ _id: 'USA', count: 3843 }
+{ _id: 'Nigeria', count: 1 }
+{ _id: 'Lithuania', count: 2 }
+{ _id: 'Qatar', count: 1 }
+{ _id: 'Switzerland', count: 49 }
+{ _id: 'France', count: 793 }
+{ _id: 'Hong Kong', count: 117 }
+{ _id: 'Kyrgyzstan', count: 1 }
 ````
 
 ### Lookup
@@ -863,30 +374,12 @@ Lookup
 }
 ````
 
-<img src="/01.CRUD and MQL/images/image32.png" width="80%" height="80%">     
+<img src="/03.index and aggregation/images/image12.png" width="80%" height="80%">     
 
 결과로 다음과 같이 Comments를 포함한 결과가 보여 집니다.
 
 
 ````
-db.users.aggregate(
-[
-  {
-    $match: {
-      name: "Mercedes Tyler",
-    },
-  },
-  {
-    $lookup: {
-      from: "comments",
-      localField: "name",
-      foreignField: "name",
-      as: "Comments",
-    },
-  },
-]);
-
-
 {
   _id: ObjectId("59b99dedcfa9a34dcd78862d"),
   name: 'Mercedes Tyler',
@@ -981,11 +474,11 @@ db.sales.aggregate(
          {
            _id: { day: { $dayOfYear: "$date"}, year: { $year: "$date" } },
            itemsSold: { $addToSet: "$item" },
-           total: {$sum: "$quantity"}
+           total_price: {$sum: "$price"}
          }
      }
    ]
-);
+)
 
 {
   _id: {
@@ -1033,7 +526,7 @@ db.artists.insertMany([
   { "_id" : 6, "last_name" : "Munch", "first_name" : "Edvard", "year_born" : 1863, "year_died" : 1944, "nationality" : "Norway" },
   { "_id" : 7, "last_name" : "Redon", "first_name" : "Odilon", "year_born" : 1840, "year_died" : 1916, "nationality" : "France" },
   { "_id" : 8, "last_name" : "Diriks", "first_name" : "Edvard", "year_born" : 1855, "year_died" : 1930, "nationality" : "Norway" }
-]);
+])
 ````
 
 태어난 년도를 기준으로 하여 집계를 위해서 bucket을 이용하여 groupBy 항목으로 year_born을 하여 줍니다. 태어난 년도의 집계는 10년을 기준으로 category화는 boundaries레 작성 기준을 작성하여 줍니다. 
@@ -1057,7 +550,7 @@ db.artists.aggregate( [
       }
     }
   }
-] );
+] )
 
 
 {
@@ -1130,7 +623,7 @@ db.clothing.insertMany([
   { "_id" : 3, "item" : "Hat", "sizes": "M" },
   { "_id" : 4, "item" : "Gloves" },
   { "_id" : 5, "item" : "Scarf", "sizes" : null }
-]);
+])
 ````
 배열로 되어 있는 값을 하나의 문서로 만들어 주기 위해 unwind를 사용합니다. 기본적으로 지정된 array (size)에 값이 없는 경우 연산에서 제외 합니다. 이를 포함하도록 하는 옵션은 preserveAndEmptyArrays입니다.
 
@@ -1139,7 +632,7 @@ db.clothing.insertMany([
 
 db.clothing.aggregate( [
    { $unwind: { path: "$sizes", preserveNullAndEmptyArrays: true } }
-] );
+] )
 
 {
   _id: 1,
@@ -1196,7 +689,7 @@ db.listingsAndReviews.aggregate( [
 summary:1, address:1, 
 price:1, distance:1}
 }
-] );
+] )
 
 {
   _id: '18426634',
