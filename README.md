@@ -39,13 +39,12 @@
 - Break
 
 3. **Index and tips**
-   - Functions & Triggers
-   - Data API & GraphQL
-   - Host
-   - Device Sync
+   - Index
+   - ESR
+   - Plan
 
 - **Handson** [GitHub][3]
-  - Data API & GraphQL
+  - Index
 
 [0]: https://github.com/MongoDBAtlas/MongoDBAtlasOperator/tree/main/00.pre-work
 [1]: https://github.com/MongoDBAtlas/MongoDBAtlasOperator/tree/main/01.CRUD%20and%20MQL

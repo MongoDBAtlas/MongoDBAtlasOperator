@@ -1,7 +1,7 @@
 <img src="https://companieslogo.com/img/orig/MDB_BIG-ad812c6c.png?t=1648915248" width="50%" title="Github_Logo"/> <br>
 
 
-# MongoDB Atlas Hands-on Training
+# MongoDB Atlas Training for Operators
 
 ## Index and Tips
 생성한 컬렉션에 인덱스를 생성하여 빠른 데이터 엑세스가 되는 것을 확인 합니다.
