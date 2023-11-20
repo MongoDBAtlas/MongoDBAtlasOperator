@@ -43,7 +43,7 @@ E-S-R 규칙에 맞추어 인덱스를 생성 하고 Explain에서 개선된 사
 
 동일한 쿼리를 수행 하여 봅니다.    
 
-<img src="03.Index and tips/images/image03.png" width="90%" height="90%">     
+<img src="/03.Index and tips/images/image03.png" width="90%" height="90%">     
 
 문서 스캔이 Index 스캔으로 변경 되고 기존에 비해 성능이 개선된 것을 확인 합니다.  
 
