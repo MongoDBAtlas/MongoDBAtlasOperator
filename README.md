@@ -10,9 +10,8 @@
 
 1. **Atlas**
    - MongoDB & Document Model
-   - MQL
-   - Architecture
-   - Aggregation
+   - MQL (CRUD)
+   - Atlas Operation
 
 - **Handson** [GitHub][1]
 
