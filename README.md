@@ -34,6 +34,7 @@
   - [Integration with Prometheus][2-4]
   - [Integration with sumo logic][2-5]
   - [Best Practices with MongoDB Atlas][2-6]
+  - [Deep dive into MongoDB metrics][2-7]
 
 - Break
 
@@ -53,4 +54,5 @@
 [2-4]: https://www.mongodb.com/blog/post/introducing-mongodb-prometheus-integration
 [2-5]: https://help.sumologic.com/docs/integrations/databases/mongodb-atlas/
 [2-6]: https://www.youtube.com/watch?v=k6x5d6O185Y
+[2-7]: https://www.mongodb.com/basics/how-to-monitor-mongodb-and-what-metrics-to-monitor
 [3]: https://github.com/MongoDBAtlas/MongoDBAtlasOperator/tree/main/03.Index%20and%20tips
